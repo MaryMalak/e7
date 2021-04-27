@@ -62,21 +62,21 @@ app.get('/api/courses/:id', (req, res) => {
 });
 
 
-// Add student
-app.post('/api/students', (req, res) => {
+// Add course
+app.post('/api/courses/create', (req, res) => {
     
     // validate request
-   // const { error } = validateStudent(req.body); // result.error
+   // const { error } = validatecourse(req.body); // result.error
     //if (error) return  res.status(400).send(result.error.details[0].message);
     
-    // create a new student object
-    const student = {
-        id: students.length + 1,
+    // create a new course object
+    const course = {
+        id: courses.length + 1,
         name: req.body.name,
         code: req.body.code,
     };
-    students.push(student);
-    res.send(student);
+    courses.push(course);
+    res.send(course);
 });
 
 
@@ -93,8 +93,6 @@ app.put('/api/courses/:id', (req, res) => {
     // If not valid, return 400 bad request
     //const { error } = validatestudent(req.body); // result.error
     //if (error) return  res.status(400).send(error.details[0].message);
-
-
 
    // Update the course 
     // Return the updated course
@@ -137,7 +135,7 @@ app.get('/api/students/:id', (req, res) => {
 });
 
 // Add student
-app.post('/api/students', (req, res) => {
+app.post('/api/students/create', (req, res) => {
     
     // validate request
    // const { error } = validateStudent(req.body); // result.error
@@ -189,7 +187,18 @@ app.delete('/api/students/:id', (req, res) => {
     // Return the same student
     res.send(student);
 });
+app.get('/web/courses/create',(req,res) =>{
+    res.sendFile(__dirname+"/course.html")
+})
+
+app.get('/web/students/create',(req,res) =>{
+    res.sendFile(__dirname+"/student.html")
+})
+
+app.get('/',(req,res) =>{
+    res.send('Welcome');
+})
+
 // Environment variable
 const port = process.env.PORT || 3000
-
 app.listen(port /*PortNumber*/, () => console.log(`Listeneing on port ${port}......`) /* optionally a function that called when the app starts listening to the given port */);
