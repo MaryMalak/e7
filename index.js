@@ -66,9 +66,17 @@ app.get('/api/courses/:id', (req, res) => {
 app.post('/api/courses/create', (req, res) => {
     
     // validate request
-   // const { error } = validatecourse(req.body); // result.error
-    //if (error) return  res.status(400).send(result.error.details[0].message);
-    
+    // const { error } = validatecourse(req.body); // result.error
+    // if (error) return  res.status(400).send(result.error.details[0].message);
+  
+    const joiCourses = Joi.object({
+        name:Joi.string().min(5).required(),
+        code:Joi.string().length(6).required(),
+        description:Joi.string().allow(null,"").max(200)
+    })
+    const result= joiCourses.validate(req.body);
+     if (result.error) return  res.status(400).send(error.details[0].message) ;
+
     // create a new course object
     const course = {
         id: courses.length + 1,
@@ -88,14 +96,14 @@ app.put('/api/courses/:id', (req, res) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
      // error 404 object not found
     if (!course) return res.status(404).send('The course with the given id was not found.');
+    const joiCourses = Joi.object({
+        name:Joi.string().min(5).required(),
+        code:Joi.string().length(6).required(),
+        description:Joi.string().allow(null,"").max(200)
+    })
+    const result= joiCourses.validate(req.body);
+    if (result.error) return  res.status(400).send(error.details[0].message) ;
         
-    // validate 
-    // If not valid, return 400 bad request
-    //const { error } = validatestudent(req.body); // result.error
-    //if (error) return  res.status(400).send(error.details[0].message);
-
-   // Update the course 
-    // Return the updated course
     course.name = req.body.name;
     course.code= req.body.code;
     course.description= req.body.description;
@@ -138,9 +146,14 @@ app.get('/api/students/:id', (req, res) => {
 app.post('/api/students/create', (req, res) => {
     
     // validate request
-   // const { error } = validateStudent(req.body); // result.error
-    //if (error) return  res.status(400).send(result.error.details[0].message);
-    
+    const joiStudents = Joi.object({
+        name: Joi.string().regex(/^[a-zA-Z-']*$/).required(),
+        code:Joi.string().length(7).required(),
+
+    })
+    const result= joiStudents.validate(req.body);
+     if (result.error) return  res.status(400).send(error.details[0].message) ;
+
     // create a new student object
     const student = {
         id: students.length + 1,
@@ -159,13 +172,16 @@ app.put('/api/students/:id', (req, res) => {
     const student = students.find(s => s.id === parseInt(req.params.id));
      // error 404 object not found
     if (!student) return res.status(404).send('The student with the given id was not found.');
-        
-    // validate 
-    // If not valid, return 400 bad request
-    //const { error } = validatestudent(req.body); // result.error
-    //if (error) return  res.status(400).send(error.details[0].message);
+         // validate request
+    const joiStudents = Joi.object({
+        name: Joi.string().regex(/^[a-zA-Z-']*$/).required(),
+        code:Joi.string().length(7).required(),
 
-
+    })
+    const result= joiStudents.validate(req.body);
+     if (result.error) return  res.status(400).send(error.details[0].message) ;
+   
+    
     // Update the student 
     student.name =req.body.name;   
     student.code =req.body.code;
